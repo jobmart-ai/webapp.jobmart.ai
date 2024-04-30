@@ -1,0 +1,41 @@
+version: '3.9'
+
+services:
+
+  mysql-db:
+    image: mysql
+    container_name: mysql-db
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_USER: towlschii
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: towlschii_utilities_database
+      MYSQL_ROOT_PASSWORD: password
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - mynetwork
+
+  backend:
+    build: ./backend
+    restart: always
+    ports:
+      - "8000:8000"
+    container_name: backend-container
+    depends_on:
+      - mysql-db
+    networks:
+      - mynetwork
+    environment:
+      SUPER_USER: towlschii
+      SUPER_PASSWORD: password
+
+volumes:
+  mysql_data:
+
+networks:
+  mynetwork:
+    driver: bridge

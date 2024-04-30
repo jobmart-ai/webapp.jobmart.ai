@@ -1,0 +1,22 @@
+# Ignore Python bytecode files
+*.pyc
+
+# Ignore Django's migration files
+# **/migrations/
+
+# Ignore Django's cache files
+**/__pycache__/
+
+# Ignore development-related files
+*.log
+*.sqlite3
+
+# Ignore Docker-related files
+.dockerignore
+Dockerfile
+
+# Ignore version control files
+.git
+.gitignore
+
+# Ignore any other files or directories specific to your project setup
