@@ -1,5 +1,5 @@
 from django.http import HttpResponse, JsonResponse
-from controllers import pdf_to_image_controller, job_application_tracker_controller
+from controllers import pdf_to_image_controller, companies_controller, job_applications_controller
 from django.views.decorators.csrf import csrf_exempt
 import json
 
@@ -10,9 +10,14 @@ utilities = [
         "Description" : "Convert a DPF to a JPEG or PNG wrapped inside a ZIP"
     },
     {
-        "name": "Job Application Tracker",
-        "path": "/api/job-application-tracker",
-        "Description" : "Add, manage and monitor Job Applications"
+        "name": "List all Companies",
+        "path": "/api/companies",
+        "Description" : "View all companies"
+    },
+    {
+        "name": "List all Job Applications",
+        "path": "/api/jobs-applications",
+        "Description" : "View all applications"
     }
 ]
 
@@ -28,15 +33,39 @@ def pdf_to_image(request):
     })
 
 @csrf_exempt
-def job_application_tracker(request):
+def companies(request):
     return genericRequestHandler(request, {
-        "GET": job_application_tracker_controller.get,
-        "POST": job_application_tracker_controller.post
+        "GET": companies_controller.getAll,
+        "POST": companies_controller.post
     })
 
-def genericRequestHandler(request, methodMap):
+@csrf_exempt
+def company(request, companyId):
+    return genericRequestHandler(request, {
+        "GET": companies_controller.get 
+    }, companyId)
+
+@csrf_exempt
+def jobApplicationsByCompany(request, companyId):
+    return genericRequestHandler(request, {
+        "GET": job_applications_controller.getByCompanyId
+    }, companyId)
+
+@csrf_exempt
+def jobApplicationsByCompanyAndApplication(request, companyId, jobApplicationId):
+    return genericRequestHandler(request, {
+        "GET": job_applications_controller.getByCompanyIdAndApplicationId 
+    }, companyId, jobApplicationId)
+
+@csrf_exempt
+def jobApplications(request):
+    return genericRequestHandler(request, {
+        "GET": job_applications_controller.getAll 
+    })
+
+def genericRequestHandler(request, methodMap, *args):
     handler = methodMap.get(request.method)
     if handler:
-        return handler(request)
+        return handler(request, *args)
     
     return HttpResponse(request.method + ' not supported', status=404)

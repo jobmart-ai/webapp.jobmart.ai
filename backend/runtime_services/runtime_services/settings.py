@@ -80,10 +80,10 @@ DATABASES = {
         "NAME": "towlschii_utilities_database",
         "USER": "towlschii",
         "PASSWORD": "password",
-        # "HOST": "mysql-db",
-        # "PORT": "3306",
-        "HOST": "localhost",
-        "PORT": "5432",
+        "HOST": "mysql-db",
+        "PORT": "3306"
+        # "HOST": "localhost",
+        # "PORT": "5432"
     }
 }
 
