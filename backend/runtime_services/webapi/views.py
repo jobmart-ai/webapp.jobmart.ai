@@ -42,7 +42,9 @@ def companies(request):
 @csrf_exempt
 def company(request, companyId):
     return genericRequestHandler(request, {
-        "GET": companies_controller.get 
+        "GET": companies_controller.get,
+        "PATCH": companies_controller.patch,
+        "DELETE": companies_controller.delete
     }, companyId)
 
 @csrf_exempt
