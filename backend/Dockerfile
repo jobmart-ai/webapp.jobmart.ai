@@ -23,6 +23,7 @@ RUN /venv/bin/pip install django
 RUN export MYSQLCLIENT_CFLAGS="-I/usr/include/mysql"
 RUN export MYSQLCLIENT_LDFLAGS="-L/usr/lib/x86_64-linux-gnu -lmysqlclient"
 RUN /venv/bin/pip install mysqlclient
+RUN /venv/bin/pip install djangorestframework
 
 WORKDIR /backend
 COPY . .

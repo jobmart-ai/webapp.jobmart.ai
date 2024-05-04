@@ -20,7 +20,7 @@ def getByCompanyIdAndApplicationId(request, companyId, applicationId):
     return HttpResponse(data, 'application/json')
 
 def getAll(request):
-    objects = [JobApplication.objects.all()]
+    objects = JobApplication.objects.all()
     if len(objects) == 0:
         return HttpResponseNotFound("Not Found")
     
