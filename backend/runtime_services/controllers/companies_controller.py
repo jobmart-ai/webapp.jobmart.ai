@@ -1,5 +1,5 @@
 import json
-from django.http import HttpResponse, JsonResponse, HttpResponseNotFound, HttpResponseBadRequest
+from django.http import HttpResponse, JsonResponse, HttpResponseNotFound
 from webapi.models import Company
 from django.core import serializers
 from controllers.serializers.companies_serializer import CompanySerializer
@@ -12,18 +12,17 @@ import datetime
 def get(request, companyId):
     objects = Company.objects.filter(pk=companyId)
     if len(objects) == 0:
-        return HttpResponseNotFound("Not Found")
+        return HttpResponseNotFound("Company Not Found")
     
     data = serializers.serialize('json', objects)
     return HttpResponse(data, 'application/json')
 
+
 def getAll(request):
     objects = Company.objects.all()
-    if len(objects) == 0:
-        return HttpResponseNotFound("Not Found")
-    
     data = serializers.serialize('json', objects)
     return HttpResponse(data, 'application/json')
+
 
 def post(request):
     try:
@@ -48,7 +47,7 @@ def post(request):
 def patch(request, companyId):
     objects = Company.objects.filter(pk=companyId)
     if len(objects) == 0:
-        return HttpResponseNotFound("Not Found")
+        return HttpResponseNotFound("Company Not Found")
     
     try:
         model = json.loads(request.body.decode('utf-8'))
@@ -77,7 +76,7 @@ def patch(request, companyId):
 def delete(request, companyId):
     objects = Company.objects.filter(pk=companyId)
     if len(objects) == 0:
-        return HttpResponseNotFound("Not Found")
+        return HttpResponseNotFound("Company Not Found")
     
     entity = objects[0]
     entity.delete()

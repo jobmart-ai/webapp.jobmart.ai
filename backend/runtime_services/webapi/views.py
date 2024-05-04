@@ -1,5 +1,5 @@
 from django.http import HttpResponse, JsonResponse
-from controllers import pdf_to_image_controller, companies_controller, job_applications_controller
+from controllers import pdf_to_image_controller, companies_controller, job_applications_controller, application_status_controller
 from django.views.decorators.csrf import csrf_exempt
 import json
 
@@ -16,8 +16,13 @@ utilities = [
     },
     {
         "name": "List all Job Applications",
-        "path": "/api/jobs-applications",
+        "path": "/api/job-applications",
         "Description" : "View all applications"
+    },
+    {
+        "name": "List all Application Stauts",
+        "path": "/api/application-status",
+        "Description" : "View all stauts"
     }
 ]
 
@@ -50,19 +55,28 @@ def company(request, companyId):
 @csrf_exempt
 def jobApplicationsByCompany(request, companyId):
     return genericRequestHandler(request, {
-        "GET": job_applications_controller.getByCompanyId
+        "GET": job_applications_controller.getByCompanyId,
+        "POST": job_applications_controller.postByCompanyId
     }, companyId)
 
 @csrf_exempt
 def jobApplicationsByCompanyAndApplication(request, companyId, jobApplicationId):
     return genericRequestHandler(request, {
-        "GET": job_applications_controller.getByCompanyIdAndApplicationId 
+        "GET": job_applications_controller.getByCompanyIdAndApplicationId,
+        "PATCH": job_applications_controller.patchByCompanyIdAndApplicationId,
+        "DELETE": job_applications_controller.deleteByCompanyIdAndApplicationId
     }, companyId, jobApplicationId)
 
 @csrf_exempt
 def jobApplications(request):
     return genericRequestHandler(request, {
         "GET": job_applications_controller.getAll 
+    })
+
+@csrf_exempt
+def appliationStatuses(request):
+    return genericRequestHandler(request, {
+        "GET": application_status_controller.getAll 
     })
 
 def genericRequestHandler(request, methodMap, *args):
