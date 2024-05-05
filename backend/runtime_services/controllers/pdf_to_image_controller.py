@@ -1,5 +1,5 @@
 from django.http import HttpResponse, JsonResponse
-from .services.pfd_to_image.main import PDFToImageConverter
+from services.pfd_to_image.main import PDFToImageConverter
 
 get_reponse = {
     "method": "POST",

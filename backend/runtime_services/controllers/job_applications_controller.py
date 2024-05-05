@@ -2,17 +2,14 @@ import json
 from django.http import HttpResponse, JsonResponse, HttpResponseNotFound
 from webapi.models import JobApplication, Company, ApplicationStatus
 from django.core import serializers
-from controllers.serializers.job_applications_serializer import JobApplicationSerializer
-from rest_framework import status
+from serializers.job_applications_serializer import JobApplicationSerializer
 from json.decoder import JSONDecodeError
 from django.db.utils import IntegrityError
+from django.forms.models import model_to_dict
 import datetime
 
 def getByCompanyId(request, companyId):
     objects = JobApplication.objects.filter(company=companyId)
-    if len(objects) == 0:
-        return HttpResponseNotFound("JobApplication Not Found")
-    
     data = serializers.serialize('json', objects)
     return HttpResponse(data, 'application/json')
 
@@ -22,8 +19,8 @@ def getByCompanyIdAndApplicationId(request, companyId, applicationId):
     if len(objects) == 0:
         return HttpResponseNotFound("JobApplication Not Found")
     
-    data = serializers.serialize('json', objects)
-    return HttpResponse(data, 'application/json')
+    data = model_to_dict(objects[0])
+    return JsonResponse(data)
 
 
 def getAll(request):
@@ -50,8 +47,8 @@ def postByCompanyId(request, companyId):
             entity.validated_data['updatedAt'] = datetime.datetime.now()
             entity.validated_data['company'] = company[0]
             entity.save()
-            data = serializers.serialize('json', [entity.instance])
-            return HttpResponse(data, 'application/json')
+            data = model_to_dict(entity.instance)
+            return JsonResponse(data)
         else:
             return BadRequestHandler("Request payload failed schema validation")
     except JSONDecodeError as e:
@@ -86,8 +83,8 @@ def patchByCompanyIdAndApplicationId(request, companyId, jobApplicationId):
             savedEntity.officeLocation = entity.validated_data['officeLocation']
             savedEntity.status = entity.validated_data['status']
             savedEntity.save()
-            data = serializers.serialize('json', [savedEntity])
-            return HttpResponse(data, 'application/json')
+            data = model_to_dict(savedEntity)
+            return JsonResponse(data)
         else:
             return BadRequestHandler("Request payload failed schema validation")
     except JSONDecodeError as e:
@@ -107,8 +104,8 @@ def deleteByCompanyIdAndApplicationId(request, companyId, jobApplicationId):
     
     entity = objects[0]
     entity.delete()
-    data = serializers.serialize('json', objects)
-    return HttpResponse(data, 'application/json')
+    data = model_to_dict(entity)
+    return JsonResponse(data)
     
 
 def BadRequestHandler(e):
@@ -122,4 +119,4 @@ def BadRequestHandler(e):
             "status": 0
         }
     }
-    return JsonResponse(error, status=status.HTTP_400_BAD_REQUEST)
+    return JsonResponse(error, status=400)
