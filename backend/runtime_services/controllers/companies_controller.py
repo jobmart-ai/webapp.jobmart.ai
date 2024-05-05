@@ -2,10 +2,10 @@ import json
 from django.http import HttpResponse, JsonResponse, HttpResponseNotFound
 from webapi.models import Company
 from django.core import serializers
-from controllers.serializers.companies_serializer import CompanySerializer
-from rest_framework import status
+from serializers.companies_serializer import CompanySerializer
 from json.decoder import JSONDecodeError
 from django.db.utils import IntegrityError
+from django.forms.models import model_to_dict
 import datetime
 
 
@@ -14,8 +14,8 @@ def get(request, companyId):
     if len(objects) == 0:
         return HttpResponseNotFound("Company Not Found")
     
-    data = serializers.serialize('json', objects)
-    return HttpResponse(data, 'application/json')
+    data = model_to_dict(objects[0])
+    return JsonResponse(data)
 
 
 def getAll(request):
@@ -32,10 +32,10 @@ def post(request):
         if entity.is_valid():
             entity.validated_data['createdAt'] = datetime.datetime.now()
             entity.validated_data['updatedAt'] = datetime.datetime.now()
-            entity.validated_data['profile_id'] = 1
+            entity.validated_data['profile_id'] = request.user.id
             entity.save()
-            data = serializers.serialize('json', [entity.instance])
-            return HttpResponse(data, 'application/json')
+            data = model_to_dict(entity.instance)
+            return JsonResponse(data)
         else:
             return BadRequestHandler("Request payload failed schema validation")
     except JSONDecodeError as e:
@@ -63,8 +63,8 @@ def patch(request, companyId):
             savedEntity.email = entity.validated_data['email']
             savedEntity.portal = entity.validated_data['portal']
             savedEntity.save()
-            data = serializers.serialize('json', [savedEntity])
-            return HttpResponse(data, 'application/json')
+            data = model_to_dict(savedEntity)
+            return JsonResponse(data)
         else:
             return BadRequestHandler("Request payload failed schema validation")
     except JSONDecodeError as e:
@@ -80,8 +80,8 @@ def delete(request, companyId):
     
     entity = objects[0]
     entity.delete()
-    data = serializers.serialize('json', objects)
-    return HttpResponse(data, 'application/json')
+    data = model_to_dict(entity)
+    return JsonResponse(data)
 
     
 def BadRequestHandler(e):
@@ -96,5 +96,5 @@ def BadRequestHandler(e):
             "portal": ""
         }
     }
-    return JsonResponse(error, status=status.HTTP_400_BAD_REQUEST)
+    return JsonResponse(error, status=400)
     
