@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+import uuid
 
 # Create your models here.
 
@@ -7,8 +8,9 @@ class Blob(models.Model):
     class Meta:
         verbose_name_plural = 'Blobs'
     
+    id = models.BigIntegerField(primary_key=True)
     content = models.BinaryField(editable=True)
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=120)
     uploadedAt = models.DateTimeField(auto_now_add=True)
     
 

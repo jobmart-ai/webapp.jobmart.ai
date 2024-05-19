@@ -76,14 +76,12 @@ WSGI_APPLICATION = "runtime_services.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.mysql",
+        "ENGINE": "django.db.backends.postgresql",
         "NAME": "towlschii_utilities_database",
         "USER": "towlschii",
         "PASSWORD": "password",
-        "HOST": "mysql-db",
-        "PORT": "3306"
-        # "HOST": "localhost",
-        # "PORT": "5432"
+        "HOST": "host.docker.internal",
+        "PORT": "5433"
     }
 }
 
