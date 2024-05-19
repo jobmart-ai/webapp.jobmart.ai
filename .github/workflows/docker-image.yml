@@ -9,7 +9,8 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    env:
+        IMAGE_TAG: $(date +%s)
     steps:
     - uses: actions/checkout@v4
     - name: Login Docker Hub
@@ -17,8 +18,8 @@ jobs:
         DOCKERHUB_USERNAME: ${{secrets.DOCKERHUB_USERNAME}}
         DOCKERHUB_PASSWORD: ${{secrets.DOCKERHUB_PASSWORD}}
       run: docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
-        
+      
     - name: Build the Docker image
-      run: docker build -t itsjustpritam123/tuw-backend:$(date +%s) ./backend
+      run: docker build -t itsjustpritam123/tuw-backend:$IMAGE_TAG ./backend
     - name: Push to Docker Hub
-      run: docker push itsjustpritam123/tuw-backend
+      run: docker push itsjustpritam123/tuw-backend:$IMAGE_TAG
