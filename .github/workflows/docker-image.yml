@@ -19,6 +19,6 @@ jobs:
       run: docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
         
     - name: Build the Docker image
-      run: docker build -t itsjustpritam123/tuw-backend ./backend
+      run: docker build -t itsjustpritam123/tuw-backend:$(date +%s) ./backend
     - name: Push to Docker Hub
-      run: docker push itsjustpritam123/tuw-backend:$(date +%s)
+      run: docker push itsjustpritam123/tuw-backend
