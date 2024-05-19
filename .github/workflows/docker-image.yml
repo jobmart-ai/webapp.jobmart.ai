@@ -16,7 +16,7 @@ jobs:
       env:
         DOCKERHUB_USERNAME: ${{secrets.DOCKERHUB_USERNAME}}
         DOCKERHUB_PASSWORD: ${{secrets.DOCKERHUB_PASSWORD}}
-      run: docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_USERNAME
+      run: docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
         
     - name: Build the Docker image
       run: docker build -t tuw-backend ./backend
