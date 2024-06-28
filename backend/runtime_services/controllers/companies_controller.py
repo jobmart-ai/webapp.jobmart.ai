@@ -79,8 +79,8 @@ def delete(request, companyId):
         return HttpResponseNotFound("Company Not Found")
     
     entity = objects[0]
-    entity.delete()
     data = model_to_dict(entity)
+    entity.delete()
     return JsonResponse(data)
 
     
