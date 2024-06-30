@@ -10,7 +10,7 @@ import datetime
 
 
 def get(request, companyId):
-    objects = Company.objects.filter(pk=companyId)
+    objects = Company.objects.filter(pk=companyId, profile=request.user)
     if len(objects) == 0:
         return HttpResponseNotFound("Company Not Found")
     
@@ -19,7 +19,7 @@ def get(request, companyId):
 
 
 def getAll(request):
-    objects = Company.objects.all()
+    objects = Company.objects.filter(profile=request.user)
     data = serializers.serialize('json', objects)
     return HttpResponse(data, 'application/json')
 

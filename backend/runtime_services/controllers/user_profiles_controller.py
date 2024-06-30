@@ -27,6 +27,7 @@ def get(request):
         
         if getProfileImage == "1" and user.profileImage:
             blob = user.profileImage
+            print(blob)
             data['profileImage'] = blob_to_dict(blob)
         
         print('User is authenticated')
@@ -50,6 +51,13 @@ def register(request):
                 login(request, entity.instance)
                 data = model_to_dict(entity.instance)
                 data = {key: value for key, value in data.items() if key in filters}
+                
+                if entity.validated_data['profileImage']:
+                    blob = entity.validated_data['profileImage']['name']
+                    data['profileImage'] = {
+                        'name': entity.validated_data['profileImage']['name'],
+                        'content': base64.b64encode(entity.validated_data['profileImage']['content']).decode('utf-8')
+                    }
 
                 print('User registered successfully')
                 return JsonResponse(data)
@@ -61,6 +69,8 @@ def register(request):
         except IntegrityError as e:
             return BadRequestHandler(e.args[1])
         except ValidationError as e:
+            return BadRequestHandler(e.args[0])
+        except AttributeError as e:
             return BadRequestHandler(e.args[0])
 
 
