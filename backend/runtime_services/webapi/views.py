@@ -6,27 +6,27 @@ import json
 utilities = [
     {
         "name": "Convert PDF to Image",
-        "path": "/api/pdf-to-image/",
+        "path": "/api/pdf-to-image",
         "Description" : "Convert a DPF to a JPEG or PNG wrapped inside a ZIP"
     },
     {
         "name": "List all Companies",
-        "path": "/api/companies/",
+        "path": "/api/companies",
         "Description" : "View all companies"
     },
     {
         "name": "List all Job Applications",
-        "path": "/api/job-applications/",
+        "path": "/api/job-applications",
         "Description" : "View all applications"
     },
     {
         "name": "List all Application Stauts",
-        "path": "/api/application-status/",
+        "path": "/api/application-status",
         "Description" : "View all stauts"
     },
     {
         "name": "Get authenticated Users",
-        "path": "/api/user/",
+        "path": "/api/user",
         "Description" : "View active users"
     }
 ]

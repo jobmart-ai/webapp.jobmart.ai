@@ -33,6 +33,7 @@ RUN pip install django
 # RUN /venv/bin/pip install mysqlclient
 RUN pip install djangorestframework
 RUN pip install psycopg2
+RUN pip install django-cors-headers
 
 WORKDIR /backend
 COPY . .

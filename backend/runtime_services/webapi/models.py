@@ -8,7 +8,7 @@ class Blob(models.Model):
     class Meta:
         verbose_name_plural = 'Blobs'
     
-    id = models.BigIntegerField(primary_key=True)
+    id = models.BigAutoField(primary_key=True)
     content = models.BinaryField(editable=True)
     name = models.CharField(max_length=120)
     uploadedAt = models.DateTimeField(auto_now_add=True)
@@ -34,7 +34,7 @@ class Company(models.Model):
     state = models.CharField(max_length=50, null=True, default=None, blank=True)
     country = models.CharField(max_length=50, null=True, default=None, blank=True)
     zipCode = models.CharField(max_length=50, null=True, default=None, blank=True)
-    email = models.CharField(max_length=100)
+    email = models.EmailField(max_length=100)
     portal = models.CharField(max_length=500)
     profile = models.ForeignKey(UserProfile, on_delete=models.PROTECT, related_name='profile', default=None)
 
